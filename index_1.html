@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Store Name | Games, consoles and gear</title>
+<meta name="description" content="Games, consoles and gaming gear. Order online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#17102B; --panel:#231A42; --line:#3A2E66; --text:#F3EEFF; --muted:#A99FCB;
+  --yellow:#FFC93C; --cyan:#35E0CF; --pink:#FF4F8B;
+  --head:"Chakra Petch","Trebuchet MS",sans-serif;
+  --body:"DM Sans","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;font-size:17px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--head);line-height:1.1}
+
+/* Header */
+header{position:sticky;top:0;z-index:20;background:rgba(23,16,43,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{font-family:var(--head);font-weight:700;font-size:1.4rem;text-decoration:none;color:var(--yellow)}
+nav{display:flex;gap:22px}
+nav a{text-decoration:none;color:var(--muted);font-weight:500}
+nav a:hover{color:var(--text)}
+.cart-btn{background:var(--yellow);color:#1b1230;border:0;border-radius:10px;padding:10px 16px;font:700 1rem var(--body);cursor:pointer;box-shadow:0 4px 0 #b88a10}
+.cart-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b88a10}
+@media(max-width:640px){nav{display:none}}
+
+/* Hero */
+.hero{padding:72px 0 56px}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);max-width:12ch}
+.hero p{color:var(--muted);max-width:46ch;margin:20px 0 28px;font-size:1.15rem}
+.btn{display:inline-block;background:var(--pink);color:#fff;text-decoration:none;font:700 1.05rem var(--body);padding:14px 26px;border-radius:12px;box-shadow:0 5px 0 #b72d62;border:0;cursor:pointer}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #b72d62}
+.perks{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:36px;color:var(--muted);font-size:.98rem}
+.perks span::before{content:"\2713\00a0";color:var(--cyan);font-weight:700}
+
+/* Shop */
+.shop{padding:40px 0 64px}
+.shop h2{font-size:2rem;margin-bottom:20px}
+.tools{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.chip{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 18px;font:500 .98rem var(--body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--cyan);color:#10222a;border-color:var(--cyan);font-weight:700}
+#search{flex:1;min-width:180px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 18px;color:var(--text);font:1rem var(--body)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.art{height:150px;display:grid;place-items:center;font-size:3.6rem}
+.info{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cat{color:var(--muted);font-size:.9rem}
+.card h3{font-size:1.15rem}
+.price{font-family:var(--head);font-weight:700;font-size:1.3rem;color:var(--yellow);margin-top:auto;padding-top:8px}
+.add{margin-top:10px;background:transparent;color:var(--text);border:2px solid var(--cyan);border-radius:10px;padding:9px;font:700 1rem var(--body);cursor:pointer}
+.add:hover{background:var(--cyan);color:#10222a}
+.empty{color:var(--muted);padding:30px 0}
+
+/* About + contact */
+.about{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:56px 0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.about h2{font-size:1.8rem;margin-bottom:12px}
+.about p{color:var(--muted);max-width:52ch}
+.about ul{list-style:none;color:var(--muted)}
+.about li{padding:6px 0}
+footer{padding:28px 0;color:var(--muted);font-size:.95rem}
+
+/* Cart drawer */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+#overlay.open{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;height:100%;width:min(400px,100%);background:var(--panel);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .25s;z-index:40;display:flex;flex-direction:column}
+#drawer.open{transform:none}
+.dhead{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
+.dhead h2{font-size:1.4rem}
+.x{background:none;border:0;color:var(--text);font-size:1.8rem;cursor:pointer;line-height:1}
+#items{flex:1;overflow:auto;padding:12px 20px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.row small{color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:1.1rem;cursor:pointer}
+.dfoot{padding:18px 20px;border-top:1px solid var(--line)}
+.total{display:flex;justify-content:space-between;font-family:var(--head);font-size:1.3rem;margin-bottom:14px}
+.dfoot .btn{width:100%;text-align:center}
+.note{color:var(--muted);font-size:.85rem;margin-top:10px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top" id="logo">Your Store Name</a>
+    <nav>
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="cart-btn" id="openCart" aria-label="Open cart">Cart (<span id="count">0</span>)</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <h1>Level up your setup.</h1>
+      <p>Games, consoles and accessories from trusted brands. Pick what you want, send your order, and we deliver.</p>
+      <a class="btn" href="#shop">Shop now</a>
+      <div class="perks">
+        <span>Original products only</span>
+        <span>Fast delivery</span>
+        <span>Friendly support</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="shop" id="shop">
+    <div class="wrap">
+      <h2>Shop</h2>
+      <div class="tools">
+        <div id="chips" style="display:contents"></div>
+        <input id="search" type="search" placeholder="Search games and gear" aria-label="Search products">
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap cols">
+      <div>
+        <h2>About us</h2>
+        <p>We are a gaming store built by players. We carry the latest games, consoles and accessories, and we help you pick the right one for your budget.</p>
+      </div>
+      <div id="contact">
+        <h2 style="font-size:1.8rem;margin-bottom:12px">Contact</h2>
+        <ul>
+          <li>WhatsApp: <span id="waText"></span></li>
+          <li>Email: hello@yourstore.com</li>
+          <li>Hours: every day, 10:00 to 22:00</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">&copy; <span id="year"></span> <span id="foot">Your Store Name</span>. All rights reserved.</div>
+</footer>
+
+<div id="overlay"></div>
+<aside id="drawer" aria-label="Shopping cart">
+  <div class="dhead"><h2>Your cart</h2><button class="x" id="closeCart" aria-label="Close cart">&times;</button></div>
+  <div id="items"></div>
+  <div class="dfoot">
+    <div class="total"><span>Total</span><span id="total">$0</span></div>
+    <button class="btn" id="checkout">Send order on WhatsApp</button>
+    <p class="note">Your order opens in WhatsApp. We confirm price, stock and delivery with you there.</p>
+  </div>
+</aside>
+
+<script>
+/* ============================================================
+   EDIT THIS PART ONLY: your store settings and products
+   ============================================================ */
+var STORE_NAME = "Your Store Name";
+var WHATSAPP   = "9647500000000";   // your number with country code, no + or spaces
+var CURRENCY   = "$";
+
+var PRODUCTS = [
+  { id:1, name:"Pro wireless controller", category:"Accessories", price:59,  icon:"🎮", c1:"#5B3FD6", c2:"#FF4F8B" },
+  { id:2, name:"Mechanical gaming keyboard", category:"Accessories", price:89, icon:"⌨️", c1:"#1E8F8A", c2:"#35E0CF" },
+  { id:3, name:"Gaming headset 7.1", category:"Accessories", price:74, icon:"🎧", c1:"#B8473A", c2:"#FFC93C" },
+  { id:4, name:"Home console, 1 TB", category:"Consoles", price:499, icon:"🕹️", c1:"#2A4BB5", c2:"#35E0CF" },
+  { id:5, name:"Handheld console", category:"Consoles", price:349, icon:"📱", c1:"#7A2FA8", c2:"#FF4F8B" },
+  { id:6, name:"Football 2027", category:"Games", price:69, icon:"⚽", c1:"#1F7A3E", c2:"#9BE564" },
+  { id:7, name:"Racing legends", category:"Games", price:59, icon:"🏎️", c1:"#B33A2A", c2:"#FFC93C" },
+  { id:8, name:"Fantasy quest", category:"Games", price:64, icon:"⚔️", c1:"#4B3AA8", c2:"#35E0CF" },
+  { id:9, name:"Gaming mouse, 16000 DPI", category:"PC gear", price:45, icon:"🖱️", c1:"#2B6CB0", c2:"#FF4F8B" },
+  { id:10, name:"RGB mouse pad XL", category:"PC gear", price:19, icon:"🟪", c1:"#A82F6E", c2:"#FFC93C" },
+  { id:11, name:"Ergonomic gaming chair", category:"PC gear", price:229, icon:"💺", c1:"#333B66", c2:"#35E0CF" },
+  { id:12, name:"27 inch 165 Hz monitor", category:"PC gear", price:259, icon:"🖥️", c1:"#1D5C8C", c2:"#9BE564" }
+];
+/* ============================================================
+   END OF EDIT AREA
+   ============================================================ */
+
+var cart = {};            // { productId: quantity }
+var activeCat = "All";
+var $ = function(id){ return document.getElementById(id); };
+
+try { cart = JSON.parse(localStorage.getItem("cart") || "{}"); } catch (e) { cart = {}; }
+function save(){ try { localStorage.setItem("cart", JSON.stringify(cart)); } catch (e) {} }
+function money(n){ return CURRENCY + n.toLocaleString("en-US"); }
+function find(id){ return PRODUCTS.filter(function(p){ return p.id == id; })[0]; }
+
+/* Store name */
+document.title = STORE_NAME + " | Games, consoles and gear";
+$("logo").textContent = STORE_NAME;
+$("foot").textContent = STORE_NAME;
+$("year").textContent = new Date().getFullYear();
+$("waText").textContent = "+" + WHATSAPP;
+
+/* Category chips */
+var cats = ["All"];
+PRODUCTS.forEach(function(p){ if (cats.indexOf(p.category) < 0) cats.push(p.category); });
+function drawChips(){
+  $("chips").innerHTML = cats.map(function(c){
+    return '<button class="chip" data-cat="' + c + '" aria-pressed="' + (c === activeCat) + '">' + c + '</button>';
+  }).join("");
+}
+
+/* Product grid */
+function drawGrid(){
+  var q = $("search").value.trim().toLowerCase();
+  var list = PRODUCTS.filter(function(p){
+    return (activeCat === "All" || p.category === activeCat) && p.name.toLowerCase().indexOf(q) > -1;
+  });
+  $("grid").innerHTML = list.length ? list.map(function(p){
+    return '<article class="card">' +
+      '<div class="art" style="background:linear-gradient(135deg,' + p.c1 + ',' + p.c2 + ')" aria-hidden="true">' + p.icon + '</div>' +
+      '<div class="info"><span class="cat">' + p.category + '</span><h3>' + p.name + '</h3>' +
+      '<div class="price">' + money(p.price) + '</div>' +
+      '<button class="add" data-add="' + p.id + '">Add to cart</button></div></article>';
+  }).join("") : '<p class="empty">No products found. Try another word or category.</p>';
+}
+
+/* Cart */
+function drawCart(){
+  var ids = Object.keys(cart).filter(function(id){ return cart[id] > 0 && find(id); });
+  var total = 0, count = 0;
+  $("items").innerHTML = ids.length ? ids.map(function(id){
+    var p = find(id), q = cart[id];
+    total += p.price * q; count += q;
+    return '<div class="row"><div><strong>' + p.name + '</strong><br><small>' + money(p.price) + ' each</small>' +
+      '<div class="qty"><button data-dec="' + id + '" aria-label="Remove one">&minus;</button><span>' + q +
+      '</span><button data-inc="' + id + '" aria-label="Add one">+</button></div></div>' +
+      '<strong>' + money(p.price * q) + '</strong></div>';
+  }).join("") : '<p class="empty">Your cart is empty. Add something from the shop.</p>';
+  $("total").textContent = money(total);
+  $("count").textContent = count;
+  $("checkout").disabled = !count;
+  $("checkout").style.opacity = count ? 1 : .5;
+  save();
+}
+function setOpen(open){
+  $("drawer").classList.toggle("open", open);
+  $("overlay").classList.toggle("open", open);
+}
+
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.dataset.cat){ activeCat = t.dataset.cat; drawChips(); drawGrid(); }
+  if (t.dataset.add){ cart[t.dataset.add] = (cart[t.dataset.add] || 0) + 1; drawCart(); setOpen(true); }
+  if (t.dataset.inc){ cart[t.dataset.inc]++; drawCart(); }
+  if (t.dataset.dec){ cart[t.dataset.dec]--; if (cart[t.dataset.dec] <= 0) delete cart[t.dataset.dec]; drawCart(); }
+});
+$("search").addEventListener("input", drawGrid);
+$("openCart").onclick = function(){ setOpen(true); };
+$("closeCart").onclick = function(){ setOpen(false); };
+$("overlay").onclick = function(){ setOpen(false); };
+document.addEventListener("keydown", function(e){ if (e.key === "Escape") setOpen(false); });
+
+$("checkout").onclick = function(){
+  var lines = [], total = 0;
+  Object.keys(cart).forEach(function(id){
+    var p = find(id); if (!p || cart[id] < 1) return;
+    lines.push(cart[id] + " x " + p.name + " (" + money(p.price * cart[id]) + ")");
+    total += p.price * cart[id];
+  });
+  var msg = "Hello " + STORE_NAME + ", I would like to order:\n" + lines.join("\n") + "\nTotal: " + money(total);
+  window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+};
+
+drawChips(); drawGrid(); drawCart();
+</script>
+</body>
+</html>
